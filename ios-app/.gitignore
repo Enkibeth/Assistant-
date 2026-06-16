@@ -1,0 +1,9 @@
+# Xcode / Swift
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+.swiftpm/
+.DS_Store
+xcuserdata/

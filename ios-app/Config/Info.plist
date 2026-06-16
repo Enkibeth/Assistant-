@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Modèle : reporter ces clés dans la configuration Info de la cible app.
+     Purpose strings demandées just-in-time (voir docs/permissions.md). -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSCalendarsFullAccessUsageDescription</key>
+    <string>Aria lit votre agenda pour préparer votre briefing et détecter les conflits, et crée des événements à votre demande.</string>
+
+    <key>NSRemindersFullAccessUsageDescription</key>
+    <string>Aria lit et crée des rappels pour vos échéances et vos relances.</string>
+
+    <key>NSContactsUsageDescription</key>
+    <string>Aria utilise les anniversaires de vos contacts pour vous prévenir à l'avance.</string>
+
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.example.aria.briefing.refresh</string>
+    </array>
+</dict>
+</plist>
