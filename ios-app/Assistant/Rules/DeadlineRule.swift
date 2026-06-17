@@ -39,7 +39,7 @@ struct ForgottenRule: BriefingRule {
                 id: "forgotten:\(reminder.id)",
                 kind: .forgotten,
                 title: reminder.title,
-                detail: "En retard de \(days) jour\(days > 1 ? "s" : "")",
+                detail: "En retard de \(BriefingGenerator.plural(days, "jour"))",
                 date: due,
                 // Plus c'est ancien, plus c'est prioritaire (plafonné).
                 priorityScore: min(0.95, 0.7 + Double(days) * 0.02)

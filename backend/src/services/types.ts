@@ -7,3 +7,11 @@ export interface DeliveryResult {
 export function newOutboundId(prefix: string): string {
   return `${prefix}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
 }
+
+/** Erreur d'un fournisseur amont (APNs / SendGrid / Twilio). */
+export class ProviderError extends Error {
+  constructor(public readonly provider: string, public readonly upstreamStatus: number) {
+    super(`${provider} upstream error ${upstreamStatus}`);
+    this.name = "ProviderError";
+  }
+}

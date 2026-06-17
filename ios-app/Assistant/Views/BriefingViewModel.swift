@@ -44,10 +44,12 @@ final class BriefingViewModel {
     func refresh() async {
         state = .loading
         do {
-            let calOK = try await calendar.requestAccess()
-            _ = try await reminders.requestAccess()
-            _ = try await contacts.requestAccess()
-            guard calOK else { state = .denied; return }
+            // Demandes indépendantes : on les lance en parallèle.
+            async let calOK = calendar.requestAccess()
+            async let remOK = reminders.requestAccess()
+            async let contactsOK = contacts.requestAccess()
+            _ = try await (remOK, contactsOK)
+            guard try await calOK else { state = .denied; return }
 
             let briefing = try await engine.makeBriefing(
                 userId: userId,

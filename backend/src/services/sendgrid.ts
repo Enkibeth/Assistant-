@@ -1,7 +1,7 @@
 import { config } from "../config.js";
 import { log, redact } from "../logger.js";
 import type { EmailRequest } from "../schemas.js";
-import { newOutboundId, type DeliveryResult } from "./types.js";
+import { newOutboundId, ProviderError, type DeliveryResult } from "./types.js";
 
 const SENDGRID_URL_GLOBAL = "https://api.sendgrid.com/v3/mail/send";
 const SENDGRID_URL_EU = "https://api.eu.sendgrid.com/v3/mail/send";
@@ -36,11 +36,4 @@ export async function sendEmail(req: EmailRequest): Promise<DeliveryResult> {
   }
   log.info("sendgrid.send", { id, to: redact(req.to, 4) });
   return { status: "sent", id, provider: "sendgrid" };
-}
-
-export class ProviderError extends Error {
-  constructor(public readonly provider: string, public readonly upstreamStatus: number) {
-    super(`${provider} upstream error ${upstreamStatus}`);
-    this.name = "ProviderError";
-  }
 }

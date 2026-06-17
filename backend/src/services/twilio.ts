@@ -1,8 +1,7 @@
 import { config } from "../config.js";
 import { log, redact } from "../logger.js";
 import type { SmsRequest } from "../schemas.js";
-import { ProviderError } from "./sendgrid.js";
-import { newOutboundId, type DeliveryResult } from "./types.js";
+import { newOutboundId, ProviderError, type DeliveryResult } from "./types.js";
 
 function twilioBaseUrl(): string {
   const region = config.twilio.region;

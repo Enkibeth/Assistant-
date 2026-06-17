@@ -7,6 +7,12 @@ struct TodayEventsRule: BriefingRule {
 
     func evaluate(_ context: RuleContext) -> [BriefingItem] {
         let dayInterval = DateInterval(start: context.startOfDay, end: context.endOfDay)
+        // Formatter alloué une seule fois par évaluation, pas par événement.
+        let formatter = DateFormatter()
+        formatter.calendar = context.preferences.calendar
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+
         return context.events
             .filter { dayInterval.intersects($0.interval) }
             .map { event in
@@ -14,7 +20,7 @@ struct TodayEventsRule: BriefingRule {
                     id: "event:\(event.id)",
                     kind: .event,
                     title: event.title,
-                    detail: Self.timeDetail(event, calendar: context.preferences.calendar),
+                    detail: Self.timeDetail(event, formatter: formatter),
                     date: event.start,
                     priorityScore: Self.score(event, now: context.referenceDate)
                 )
@@ -29,12 +35,8 @@ struct TodayEventsRule: BriefingRule {
         return 0.45
     }
 
-    private static func timeDetail(_ event: DomainEvent, calendar: Calendar) -> String {
+    private static func timeDetail(_ event: DomainEvent, formatter: DateFormatter) -> String {
         if event.isAllDay { return "Toute la journée" }
-        let f = DateFormatter()
-        f.calendar = calendar
-        f.timeStyle = .short
-        f.dateStyle = .none
-        return "\(f.string(from: event.start)) – \(f.string(from: event.end))"
+        return "\(formatter.string(from: event.start)) – \(formatter.string(from: event.end))"
     }
 }

@@ -7,13 +7,19 @@ struct BirthdayRule: BriefingRule {
 
     func evaluate(_ context: RuleContext) -> [BriefingItem] {
         let leadDays = Set(context.preferences.birthdayLeadDays + [0])
+        // Formatter alloué une seule fois par évaluation, pas par contact.
+        let formatter = DateFormatter()
+        formatter.calendar = context.preferences.calendar
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+
         return context.birthdays.compactMap { birthday in
             guard leadDays.contains(birthday.daysUntil) else { return nil }
             return BriefingItem(
                 id: "birthday:\(birthday.id):\(birthday.daysUntil)",
                 kind: .birthday,
                 title: Self.title(for: birthday),
-                detail: Self.detail(for: birthday, calendar: context.preferences.calendar),
+                detail: formatter.string(from: birthday.nextOccurrence),
                 date: birthday.nextOccurrence,
                 priorityScore: Self.score(daysUntil: birthday.daysUntil)
             )
@@ -26,14 +32,6 @@ struct BirthdayRule: BriefingRule {
         case 1: return "🎂 Anniversaire de \(b.name) demain"
         default: return "🎂 Anniversaire de \(b.name) dans \(b.daysUntil) jours"
         }
-    }
-
-    private static func detail(for b: DomainBirthday, calendar: Calendar) -> String {
-        let f = DateFormatter()
-        f.calendar = calendar
-        f.dateStyle = .long
-        f.timeStyle = .none
-        return f.string(from: b.nextOccurrence)
     }
 
     /// Plus l'anniversaire est proche, plus le score est élevé.

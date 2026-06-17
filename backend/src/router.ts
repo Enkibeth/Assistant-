@@ -15,8 +15,9 @@ import {
   smsRequest,
 } from "./schemas.js";
 import { sendPush } from "./services/apns.js";
-import { sendEmail, ProviderError } from "./services/sendgrid.js";
+import { sendEmail } from "./services/sendgrid.js";
 import { sendSms } from "./services/twilio.js";
+import { ProviderError } from "./services/types.js";
 
 /** Garde d'idempotence : lève 409 si la clé a déjà été traitée. */
 function claimOrConflict(dedupeKey: string): void {

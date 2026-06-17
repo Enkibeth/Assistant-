@@ -38,7 +38,7 @@ enum BriefingGenerator {
     }
 
     /// Accord pluriel simple en français (ajout d'un « s »).
-    private static func plural(_ n: Int, _ word: String) -> String {
+    static func plural(_ n: Int, _ word: String) -> String {
         "\(n) \(word)\(n > 1 ? "s" : "")"
     }
 }

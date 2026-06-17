@@ -33,7 +33,7 @@ final class RemindersService: ReminderProviding {
             DomainReminder(
                 id: ek.calendarItemIdentifier,
                 title: ek.title ?? "(Sans titre)",
-                dueDate: ek.dueDateComponents?.date,
+                dueDate: ek.dueDateComponents.flatMap { Calendar.current.date(from: $0) },
                 isCompleted: ek.isCompleted,
                 priority: ek.priority
             )
@@ -53,8 +53,4 @@ final class RemindersService: ReminderProviding {
         try store.save(reminder, commit: true)
         return reminder.calendarItemIdentifier
     }
-}
-
-private extension DateComponents {
-    var date: Date? { Calendar.current.date(from: self) }
 }
